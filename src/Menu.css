@@ -22,7 +22,7 @@
   text-align: left;
 }
 
-.Menu__item--default {
+.Menu__item--selected {
   border-top: 2px solid white;
   border-bottom: 2px solid white;
 }

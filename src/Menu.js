@@ -4,14 +4,15 @@ import './Menu.css';
 
 const Menu = ({
   title,
-  options
+  items,
+  selectedItem
 }) => {
-  const menuOptions = options.map((item, key) =>
+  const menuItems = items.map((item, key) =>
       <div className={cx({
         'Menu__item': true,
-        'Menu__item--default': item.default
+        'Menu__item--selected': key === selectedItem
       })} key={key}>
-        {item.name}
+        {item}
       </div>
   );
 
@@ -21,7 +22,7 @@ const Menu = ({
         {title}
       </div>
       <div className="Menu__items">
-        {menuOptions}
+        {menuItems}
       </div>
     </div>
   );
