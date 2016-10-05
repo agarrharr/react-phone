@@ -1,0 +1,28 @@
+.Menu {
+  text-align: center;
+  padding-top: 25%;
+}
+
+.Menu__title {
+  font-size: 1.2em;
+}
+
+.Menu__items {
+  position: absolute;
+  bottom: 0;
+  margin: 10px;
+  left: 0;
+  width: calc(100% - 20px);
+}
+
+.Menu__item {
+  font-size: 1em;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+}
+
+.Menu__item--default {
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+}
