@@ -10,8 +10,8 @@ class Phone extends Component {
     super(props);
 
     this.state = {
-      selectedItem: 0,
       menuItems: ['View', 'Cancel'],
+      selectedItem: 0,
       isMenuOpen: false,
       date: new Date()
     };
@@ -21,7 +21,7 @@ class Phone extends Component {
   }
 
   handleDownClick() {
-    let selectedItem = this.state.selectedItem + (this.state.selectedItem >= this.state.menuItems.length - 1 ? 0 : 1);
+    const selectedItem = this.state.selectedItem + (this.state.selectedItem >= this.state.menuItems.length - 1 ? 0 : 1);
 
     this.setState({
       selectedItem: selectedItem
@@ -29,15 +29,19 @@ class Phone extends Component {
   }
 
   componentWillMount() {
-    setInterval(() => {
+    this.timeInterval = setInterval(() => {
       this.setState({
         date: new Date()
       });
     }, 1000);
   }
 
+  componentWillUnmount() {
+    clearInterval(this.timeInterval);
+  }
+
   handleUpClick() {
-    let selectedItem = this.state.selectedItem + (this.state.selectedItem < 1 ? 0 : -1);
+    const selectedItem = this.state.selectedItem + (this.state.selectedItem < 1 ? 0 : -1);
 
     this.setState({
       selectedItem
@@ -45,9 +49,9 @@ class Phone extends Component {
   }
 
   render() {
-    let menu = <Menu title="New message" items={this.state.menuItems} selectedItem={this.state.selectedItem} />;
-    let homescreen = <Homescreen date={this.state.date} />;
-    let screen = this.state.isMenuOpen ? menu : homescreen;
+    const menu = <Menu title="New message" items={this.state.menuItems} selectedItem={this.state.selectedItem} />;
+    const homescreen = <Homescreen date={this.state.date} />;
+    const screen = this.state.isMenuOpen ? menu : homescreen;
     return (
         <div className="Phone">
           <div className="Phone__screen">
