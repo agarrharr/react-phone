@@ -7,8 +7,8 @@ import './Phone.css';
 
 
 class Phone extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super(...arguments);
 
     this.state = {
       menuItems: ['View', 'Cancel'],
