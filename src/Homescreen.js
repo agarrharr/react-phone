@@ -2,8 +2,9 @@ import React from 'react';
 import './Homescreen.css';
 import {FormattedDate, FormattedTime} from 'react-intl';
 
-const Homescreen = ({date, isMilitaryTime, notifications}) => {
-  let notificationMessage = `New message: ${notifications[0].message}`;
+const Homescreen = ({date, isMilitaryTime, messageNotifications, missedCallNotifications}) => {
+  let messageNotificationMessage = `New message: ${messageNotifications[0].message}`;
+  let missedCallNotificationMessage = ``;
 
   return (
     <div className="Home">
@@ -36,7 +37,8 @@ const Homescreen = ({date, isMilitaryTime, notifications}) => {
         </div>
       </div>
       <div className="Home__notifications">
-      {notificationMessage}
+      {messageNotificationMessage}
+      {missedCallNotificationMessage}
       </div>
     </div>
   );

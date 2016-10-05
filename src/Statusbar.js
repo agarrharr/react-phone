@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Statusbar = ({carrier, volumeLevel, batteryLevel, isBluetoothOn}) => {
-  const lock = <div className="Statusbar__lock">lock</div>;
+const Statusbar = ({isLocked, volumeLevel, batteryLevel, isBluetoothOn, carrier }) => {
+  const lock = isLocked ? <div className="Statusbar__lock">lock</div>: null;
   const volume = <div className="Statusbar__volume">volume: {volumeLevel}</div>
   const battery = <div className="Statusbar__battery">battery: {batteryLevel}%</div>
   const bluetooth = isBluetoothOn ? <div className="Statusbar__bluetooth">bluetooth on</div> : null;

@@ -26,16 +26,23 @@ class Phone extends Component {
         carrier: 'T-Mobile'
       },
       isLocked: true,
-      notifications: [
+      messageNotifications: [
         {
-          type: 'New message',
-          message: 'Douglas Adams Mobile'
+          message: 'Douglas Adams Mobile',
+          hasShownMenu: false
+        }
+      ],
+      missedCallNotifications: [
+        {
+          message: 'Douglas Adams Mobile',
+          hasShownMenu: false
         }
       ]
     };
 
     this.handleUpClick = this.handleUpClick.bind(this);
     this.handleDownClick = this.handleDownClick.bind(this);
+    this.handleUnlockClick = this.handleUnlockClick.bind(this);
   }
 
   handleDownClick() {
@@ -66,17 +73,30 @@ class Phone extends Component {
     });
   }
 
+  handleUnlockClick() {
+    this.setState({isLocked: !this.state.isLocked}, () => {
+      if (!this.state.isLocked) {
+        const unshownNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownMenu);
+        if (unshownNotifications.length > 0) {
+          this.setState({isMenuOpen: true});
+        }
+      }
+    });
+  }
+
   render() {
     const menu = <Menu title="New message" items={this.state.menuItems} selectedItem={this.state.selectedItem} />;
-    const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} notifications={this.state.notifications} />;
+    const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messageNotifications} missedCallNotifications={this.state.missedCallNotifications} />;
+    const statusbar = this.state.isMenuOpen ? null : <Statusbar isLocked={this.state.isLocked} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} />;
     const screen = this.state.isMenuOpen ? menu : homescreen;
+
     return (
         <div className="Phone">
           <div className="Phone__screen">
-            <Statusbar carrier={this.state.info.carrier} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} />
+            {statusbar}
             {screen}
           </div>
-          <Buttons onUpClick={this.handleUpClick} onDownClick={this.handleDownClick} />
+          <Buttons onUpClick={this.handleUpClick} onDownClick={this.handleDownClick} onUnlockClick={this.handleUnlockClick} />
         </div>
     );
   }

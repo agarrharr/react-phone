@@ -1,12 +1,13 @@
 import React from 'react';
 import './Buttons.css';
 
-const Buttons = ({onUpClick, onDownClick}) => {
+const Buttons = ({onUpClick, onDownClick, onUnlockClick}) => {
     return (
         <div className="Buttons">
-          <div onClick={onUpClick}>Up</div>
-          <div>Select</div>
-          <div onClick={onDownClick}>Down</div>
+          <div className="Buttons__button" onClick={onUnlockClick}>Unlock</div>
+          <div className="Buttons__button" onClick={onUpClick}>Up</div>
+          <div className="Buttons__button">Select</div>
+          <div className="Buttons__button" onClick={onDownClick}>Down</div>
         </div>
     );
 }
