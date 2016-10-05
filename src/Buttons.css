@@ -1,0 +1,12 @@
+.Buttons__button {
+  background: #000;
+  color: #FFF;
+  border-radius: 50px;
+  height: 50px;
+  width: 50px;
+  float: left;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  margin: 5px;
+}
