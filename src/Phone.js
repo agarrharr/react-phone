@@ -16,7 +16,13 @@ class Phone extends Component {
       date: new Date(),
       settings: {
         isMilitaryTime: true
-      }
+      },
+      notifications: [
+        {
+          type: 'New message',
+          message: 'Douglas Adams Mobile'
+        }
+      ]
     };
 
     this.handleUpClick = this.handleUpClick.bind(this);
@@ -53,7 +59,7 @@ class Phone extends Component {
 
   render() {
     const menu = <Menu title="New message" items={this.state.menuItems} selectedItem={this.state.selectedItem} />;
-    const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} />;
+    const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} notifications={this.state.notifications} />;
     const screen = this.state.isMenuOpen ? menu : homescreen;
     return (
         <div className="Phone">

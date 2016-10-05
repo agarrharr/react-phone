@@ -1,0 +1,29 @@
+.Home {
+}
+.Home__statusbar {
+  height: 30px;
+}
+.Home__datetime {
+  border-top: 2px solid #FFF;
+  border-bottom: 2px solid #FFF;
+}
+
+.Home__datetime__time {
+  font-size: 3em;
+  display: inline;
+}
+.Home__datetime__date {
+  margin-top: 10px;
+  float: right;
+  text-align: right;
+}
+.Home__datetime__date span {
+  margin-right: 5px;
+}
+.Home__notifications {
+  margin: 10px;
+  text-overflow: ellipsis;
+  /* Required for text-overflow to do anything */
+  white-space: nowrap;
+  overflow: hidden;
+}
