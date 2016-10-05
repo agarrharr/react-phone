@@ -70,14 +70,16 @@ class Phone extends Component {
   }
 
   handleUnlockClick() {
-    this.setState({isLocked: !this.state.isLocked}, () => {
-      if (!this.state.isLocked) {
-        const unshownNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownMenu);
-        if (unshownNotifications.length > 0) {
-          this.setState({isMenuOpen: true});
-        }
+    this.setState({isLocked: !this.state.isMenuOpen ? !this.state.isLocked : this.state.isLocked}, this.lockScreen);
+  }
+
+  lockScreen() {
+    if (!this.state.isLocked) {
+      const unshownNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownMenu);
+      if (unshownNotifications.length > 0) {
+        this.setState({isMenuOpen: true});
       }
-    });
+    }
   }
 
   render() {
