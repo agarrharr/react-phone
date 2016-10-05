@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
-import Menu from './Menu';
+import Phone from './Phone';
 import './App.css';
 
 class App extends Component {
   render() {
-    const options = [{name: 'View', default: true}, {name: 'Cancel'}];
     return (
       <div className="App">
-        <div className="App__phone">
-          <Menu title="New message" options={options} />
-        </div>
+        <Phone/>
+        <div onClick={this.buttonPress.bind(this)('up')}>Up</div>
+        <div onClick={this.buttonPress.bind(this)('select')}>Select</div>
+        <div onClick={this.buttonPress.bind(this)('down')}>Down</div>
       </div>
     );
+  }
+
+  buttonPress(key) {
+    return () => {
+      console.log(key);
+    }
   }
 }
 

@@ -1,0 +1,9 @@
+.Phone {
+  height: 300px;
+  width: 300px;
+  position: relative;
+  background-color: #000;
+  color: #FFF;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 100;
+}

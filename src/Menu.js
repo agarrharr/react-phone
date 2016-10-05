@@ -6,11 +6,11 @@ const Menu = ({
   title,
   options
 }) => {
-  const menuOptions = options.map(item =>
+  const menuOptions = options.map((item, key) =>
       <div className={cx({
         'Menu__item': true,
         'Menu__item--default': item.default
-      })}>
+      })} key={key}>
         {item.name}
       </div>
   );
