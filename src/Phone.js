@@ -45,14 +45,6 @@ class Phone extends Component {
     this.handleUnlockClick = this.handleUnlockClick.bind(this);
   }
 
-  handleDownClick() {
-    const selectedItem = this.state.selectedItem + (this.state.selectedItem >= this.state.menuItems.length - 1 ? 0 : 1);
-
-    this.setState({
-      selectedItem: selectedItem
-    });
-  }
-
   componentWillMount() {
     this.timeInterval = setInterval(() => {
       this.setState({
@@ -66,10 +58,14 @@ class Phone extends Component {
   }
 
   handleUpClick() {
-    const selectedItem = this.state.selectedItem + (this.state.selectedItem < 1 ? 0 : -1);
-
     this.setState({
-      selectedItem
+      selectedItem: this.state.selectedItem + (this.state.selectedItem < 1 ? 0 : -1)
+    });
+  }
+
+  handleDownClick() {
+    this.setState({
+      selectedItem: this.state.selectedItem + (this.state.selectedItem >= this.state.menuItems.length - 1 ? 0 : 1)
     });
   }
 
@@ -96,7 +92,11 @@ class Phone extends Component {
             {statusbar}
             {screen}
           </div>
-          <Buttons onUpClick={this.handleUpClick} onDownClick={this.handleDownClick} onUnlockClick={this.handleUnlockClick} />
+          <Buttons
+            onUpClick={this.handleUpClick}
+            onDownClick={this.handleDownClick}
+            onUnlockClick={this.handleUnlockClick}
+          />
         </div>
     );
   }
