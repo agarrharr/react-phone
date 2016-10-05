@@ -28,4 +28,10 @@ const Menu = ({
   );
 };
 
+Menu.propTypes = {
+  title: React.PropTypes.string.isRequired,
+  items: React.PropTypes.array.isRequired,
+  selectedItem: React.PropTypes.number.isRequired
+};
+
 export default Menu;
