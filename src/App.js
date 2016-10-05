@@ -7,17 +7,8 @@ class App extends Component {
     return (
       <div className="App">
         <Phone/>
-        <div onClick={this.buttonPress.bind(this)('up')}>Up</div>
-        <div onClick={this.buttonPress.bind(this)('select')}>Select</div>
-        <div onClick={this.buttonPress.bind(this)('down')}>Down</div>
       </div>
     );
-  }
-
-  buttonPress(key) {
-    return () => {
-      console.log(key);
-    }
   }
 }
 

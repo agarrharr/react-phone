@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Menu from './Menu';
+import Buttons from './Buttons';
 import './Phone.css';
 
-const Phone = () => {
-  const options = [{name: 'View', default: true}, {name: 'Cancel', default: false}];
+let defaultOption = 0;
 
-  return (
-      <div className="Phone">
-        <Menu title="New message" options={options} />
-      </div>
-  );
+class Phone extends Component {
+  render() {
+    const options = ['View', 'Cancel'];
+    const menuOptions = options.map((option, i) => ({
+      name: option,
+      default: defaultOption === i
+    }));
+
+    return (
+        <div className="Phone">
+          <div className="Phone__screen">
+            <Menu title="New message" options={menuOptions} />
+          </div>
+          <Buttons />
+        </div>
+    );
+  }
 }
 
 export default Phone;
