@@ -13,7 +13,10 @@ class Phone extends Component {
       menuItems: ['View', 'Cancel'],
       selectedItem: 0,
       isMenuOpen: false,
-      date: new Date()
+      date: new Date(),
+      settings: {
+        isMilitaryTime: true
+      }
     };
 
     this.handleUpClick = this.handleUpClick.bind(this);
@@ -50,7 +53,7 @@ class Phone extends Component {
 
   render() {
     const menu = <Menu title="New message" items={this.state.menuItems} selectedItem={this.state.selectedItem} />;
-    const homescreen = <Homescreen date={this.state.date} />;
+    const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} />;
     const screen = this.state.isMenuOpen ? menu : homescreen;
     return (
         <div className="Phone">
