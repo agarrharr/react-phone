@@ -1,24 +1,24 @@
 .Home {
   padding-top: 50px;
 }
-.Home__datetime {
+.Home__Datetime {
   border-top: 2px solid #FFF;
   border-bottom: 2px solid #FFF;
 }
 
-.Home__datetime__time {
+.Home__Time {
   font-size: 3em;
   display: inline;
 }
-.Home__datetime__date {
+.Home__Date {
   margin-top: 10px;
   float: right;
   text-align: right;
 }
-.Home__datetime__date span {
+.Home__Date span {
   margin-right: 5px;
 }
-.Home__notifications {
+.Home__Notifications {
   margin: 10px;
   text-overflow: ellipsis;
   /* Required for text-overflow to do anything */
