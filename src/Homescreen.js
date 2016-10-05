@@ -7,8 +7,6 @@ const Homescreen = ({date, isMilitaryTime, notifications}) => {
 
   return (
     <div className="Home">
-      <div className="Home__statusbar">
-      </div>
       <div className="Home__datetime">
         <div className="Home__datetime__time">
           <FormattedTime

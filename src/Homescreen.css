@@ -1,7 +1,5 @@
 .Home {
-}
-.Home__statusbar {
-  height: 30px;
+  padding-top: 50px;
 }
 .Home__datetime {
   border-top: 2px solid #FFF;

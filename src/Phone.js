@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Menu from './Menu';
+import Statusbar from './Statusbar';
 import Homescreen from './Homescreen';
 import Buttons from './Buttons';
 import './Phone.css';
@@ -15,8 +16,16 @@ class Phone extends Component {
       isMenuOpen: false,
       date: new Date(),
       settings: {
-        isMilitaryTime: true
+        isMilitaryTime: true,
+        showCarrier: true
       },
+      batteryLevel: 100,
+      isBluetoothOn: false,
+      volumeLevel: 0,
+      info: {
+        carrier: 'T-Mobile'
+      },
+      isLocked: true,
       notifications: [
         {
           type: 'New message',
@@ -64,6 +73,7 @@ class Phone extends Component {
     return (
         <div className="Phone">
           <div className="Phone__screen">
+            <Statusbar carrier={this.state.info.carrier} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} />
             {screen}
           </div>
           <Buttons onUpClick={this.handleUpClick} onDownClick={this.handleDownClick} />
