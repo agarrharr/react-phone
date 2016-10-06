@@ -19,7 +19,6 @@ class Phone extends Component {
 
     this.state = {
       alertItems: [],
-      // TODO: move this into Alert
       alertSelectedItem: 0,
       screenState: SCREEN_STATES.HOMESCREEN,
       menuTitle: '',
@@ -27,30 +26,32 @@ class Phone extends Component {
       date: new Date(),
       settings: {
         isMilitaryTime: true,
-        showCarrier: true
+        showCarrier: true,
       },
       batteryLevel: 100,
       isBluetoothOn: true,
       volumeLevel: 0,
       info: {
-        carrier: 'T-Mobile'
+        carrier: 'T-Mobile',
       },
       messages: [
         {
           message: 'Douglas Adams Mobile',
-          hasShownAlert: false
+          viewed: false,
+          hasShownAlert: false,
         },
         {
           message: 'Steve Wozniak Mobile',
-          hasShownAlert: false
+          viewed: false,
+          hasShownAlert: false,
         },
       ],
       missedCalls: [
         {
           message: 'Douglas Adams Mobile',
-          hasShownAlert: false
-        }
-      ]
+          hasShownAlert: false,
+        },
+      ],
     };
 
     this.handleUpClick = this.handleUpClick.bind(this);
@@ -106,12 +107,12 @@ class Phone extends Component {
       } else if (this.state.alertItems[this.state.alertSelectedItem] === 'Cancel') {
         if (this.getAlertType() === 'messages') {
           this.setState({
-            messages: this.state.messages.map(n => ({message: n.message, hasShownAlert: true})),
+            messages: this.state.messages.map(n => Object.assign({}, n, {hasShownAlert: true})),
             screenState: SCREEN_STATES.HOMESCREEN
           });
         } else if (this.getAlertType() === 'missed calls') {
           this.setState({
-            missedCalls: this.state.missedCalls.map(n => ({message: n.message, hasShownAlert: true})),
+            missedCalls: this.state.missedCalls.map(n => Object.assign({}, n, {hasShownAlert: true})),
             screenState: SCREEN_STATES.HOMESCREEN
           });
         }
