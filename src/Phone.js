@@ -56,6 +56,7 @@ class Phone extends Component {
     this.handleLockClick = this.handleLockClick.bind(this);
     this.handleSelectClick = this.handleSelectClick.bind(this);
     this.handleEndCallClick = this.handleEndCallClick.bind(this);
+    this.handleCallClick = this.handleCallClick.bind(this);
   }
 
   componentWillMount() {
@@ -95,17 +96,32 @@ class Phone extends Component {
           this.goToMissedCalls();
         }
       } else if (this.state.alertItems[this.state.alertSelectedItem] === 'Cancel') {
-        if (this.state.alertType === 'messages') {
-          this.markAllMessagesAsRead(this.goHome);
-        } else if (this.state.alertType === 'missed calls') {
-          this.markAllMissedCallsAsRead(this.goHome);
-        }
+        this.markCurrentAlertsAsRead();
       }
     }
   }
 
   handleEndCallClick() {
-    this.goHome();
+    if (this.state.isAlertOpen) {
+      this.markCurrentAlertsAsRead();
+    } else {
+      this.goHome();
+    }
+  }
+
+  handleCallClick() {
+    if (this.state.isMenuOpen || this.state.isAlertOpen) {
+      return;
+    }
+    this.goToMissedCalls();
+  }
+
+  markCurrentAlertsAsRead() {
+    if (this.state.alertType === 'messages') {
+      this.markAllMessagesAsRead(this.goHome);
+    } else if (this.state.alertType === 'missed calls') {
+      this.markAllMissedCallsAsRead(this.goHome);
+    }
   }
 
   markAllMessagesAsRead(callback) {
@@ -195,6 +211,7 @@ class Phone extends Component {
             onLockClick={this.handleLockClick}
             onSelectClick={this.handleSelectClick}
             onEndCallClick={this.handleEndCallClick}
+            onCallClick={this.handleCallClick}
           />
         </div>
     );
