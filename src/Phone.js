@@ -53,7 +53,7 @@ class Phone extends Component {
 
     this.handleUpClick = this.handleUpClick.bind(this);
     this.handleDownClick = this.handleDownClick.bind(this);
-    this.handleUnlockClick = this.handleUnlockClick.bind(this);
+    this.handleLockClick = this.handleLockClick.bind(this);
     this.handleSelectClick = this.handleSelectClick.bind(this);
     this.handleEndCallClick = this.handleEndCallClick.bind(this);
   }
@@ -82,7 +82,7 @@ class Phone extends Component {
     });
   }
 
-  handleUnlockClick() {
+  handleLockClick() {
     this.setState({isLocked: !this.state.isAlertOpen ? !this.state.isLocked : this.state.isLocked}, this.goHome);
   }
 
@@ -181,7 +181,7 @@ class Phone extends Component {
           <Buttons
             onUpClick={this.handleUpClick}
             onDownClick={this.handleDownClick}
-            onUnlockClick={this.handleUnlockClick}
+            onLockClick={this.handleLockClick}
             onSelectClick={this.handleSelectClick}
             onEndCallClick={this.handleEndCallClick}
           />
