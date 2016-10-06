@@ -83,7 +83,7 @@ class Phone extends Component {
   }
 
   handleLockClick() {
-    this.setState({isLocked: !this.state.isAlertOpen ? !this.state.isLocked : this.state.isLocked}, this.goHome);
+    this.setState({isLocked: (this.state.isAlertOpen || this.state.isMenuOpen) ? this.state.isLocked : !this.state.isLocked}, this.goHome);
   }
 
   handleSelectClick() {
@@ -94,7 +94,7 @@ class Phone extends Component {
         } else if (this.state.alertType === 'missed calls') {
           this.goToMissedCalls();
         }
-      } else {
+      } else if (this.state.alertItems[this.state.alertSelectedItem] === 'Cancel') {
         if (this.state.alertType === 'messages') {
           this.markAllMessagesAsRead(this.goHome);
         } else if (this.state.alertType === 'missed calls') {
@@ -121,11 +121,21 @@ class Phone extends Component {
   }
 
   goHome() {
+    this.setState({
+      isAlertOpen: false,
+      isMenuOpen: false
+    }, this.showAlerts);
+  }
+
+  showAlerts() {
     const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
     const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
     let alertTitle = '';
     let alertType = '';
     let isAlertOpen = true;
+    if (this.state.isMenuOpen || this.state.isAlertOpen) {
+      return;
+    }
     if (unreadMessageNotifications.length > 0) {
       alertTitle = `New message${unreadMessageNotifications.length > 1 ? 's' : ''}`;
       alertType = 'messages';
@@ -161,7 +171,8 @@ class Phone extends Component {
       isAlertOpen: false,
       isMenuOpen: true,
       menuTitle: 'Call history',
-      menuItems: []
+      menuItems: [],
+      missedCallNotifications: []
     });
   }
 
