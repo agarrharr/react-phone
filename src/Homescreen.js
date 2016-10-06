@@ -38,7 +38,7 @@ const Homescreen = ({date, isMilitaryTime, messageNotifications, missedCallNotif
           />
         </div>
         <div className="Home__Date">
-          <div className="Home__datetime__date__weekday">
+          <div className="Home__Weekday">
             <FormattedDate
               value={date}
               weekday='short'

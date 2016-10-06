@@ -1,11 +1,14 @@
 .Statusbar div {
   display: inline;
+  margin-top: 5px;
 }
 .Statusbar__Left {
   float: left;
+  margin-left: 10px;
 }
 .Statusbar__Right {
   float: right;
+  margin-right: 5px;
 }
 .Statusbar__Icon {
   content: '';
