@@ -1,3 +1,15 @@
+.Buttons {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.Buttons__Row {
+  float: left;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.Buttons__Row--Offset {
+  margin-top: 0px;
+}
 .Buttons__Button {
   background: #000;
   color: #FFF;
@@ -7,5 +19,10 @@
   text-align: center;
   line-height: 50px;
   cursor: pointer;
-  margin: 5px;
+  margin-top: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.clearfix {
+  clear: both;
 }
