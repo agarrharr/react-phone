@@ -6,6 +6,12 @@ import Homescreen from './Homescreen';
 import Buttons from './Buttons';
 import './Phone.css';
 
+const SCREEN_STATES = {
+  LOCKED: 'LOCKED',
+  ALERT: 'ALERT',
+  MENU: 'MENU',
+  HOMESCREEN: 'HOMESCREEN'
+};
 
 class Phone extends Component {
   constructor() {
@@ -15,8 +21,7 @@ class Phone extends Component {
       alertItems: [],
       // TODO: move this into Alert
       alertSelectedItem: 0,
-      isAlertOpen: false,
-      isMenuOpen: false,
+      screenState: SCREEN_STATES.HOMESCREEN,
       menuTitle: '',
       menuItems: [],
       date: new Date(),
@@ -30,7 +35,6 @@ class Phone extends Component {
       info: {
         carrier: 'T-Mobile'
       },
-      isLocked: true,
       messageNotifications: [
         {
           message: 'Douglas Adams Mobile',
@@ -70,27 +74,29 @@ class Phone extends Component {
   }
 
   handleUpClick() {
-    if (this.state.isLocked) { return; }
+    if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
     this.setState({
       alertSelectedItem: this.state.alertSelectedItem + (this.state.alertSelectedItem < 1 ? 0 : -1)
     });
   }
 
   handleDownClick() {
-    if (this.state.isLocked) { return; }
+    if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
     this.setState({
       alertSelectedItem: this.state.alertSelectedItem + (this.state.alertSelectedItem >= this.state.alertItems.length - 1 ? 0 : 1)
     });
   }
 
   handleLockClick() {
-    const isLocked = (this.state.isAlertOpen || this.state.isMenuOpen) ? this.state.isLocked : !this.state.isLocked;
-    this.setState({isLocked}, this.goHome);
+    const isLocked = (this.state.screenState === SCREEN_STATES.HOMESCREEN) ? this.state.isLocked : !this.state.isLocked;
+    this.setState({
+      screenState: isLocked ? SCREEN_STATES.LOCKED : this.state.screenState
+    }, this.goHome);
   }
 
   handleSelectClick() {
-    if (this.state.isLocked) { return; }
-    if (this.state.isAlertOpen) {
+    if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
+    if (this.state.screenState === SCREEN_STATES.ALERT) {
       if (this.state.alertItems[this.state.alertSelectedItem] === 'View') {
         if (this.getAlertType() === 'messages') {
           this.goToMessages();
@@ -104,19 +110,13 @@ class Phone extends Component {
   }
 
   handleEndCallClick() {
-    if (this.state.isLocked) { return; }
-    if (this.state.isAlertOpen) {
-      this.markCurrentAlertsAsRead();
-    } else {
-      this.goHome();
-    }
+    if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
+    this.goHome();
   }
 
   handleCallClick() {
-    if (this.state.isLocked) { return; }
-    if (this.state.isMenuOpen || this.state.isAlertOpen) {
-      return;
-    }
+    if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
+    if (this.state.screenState !== SCREEN_STATES.HOMESCREEN) { return; }
     this.goToMissedCalls();
   }
 
@@ -142,8 +142,7 @@ class Phone extends Component {
 
   goHome() {
     this.setState({
-      isAlertOpen: false,
-      isMenuOpen: false
+      screenState: SCREEN_STATES.HOMESCREEN
     });
     this.showAlerts();
   }
@@ -167,16 +166,14 @@ class Phone extends Component {
     this.setState({
       alertItems: ['View', 'Cancel'],
       alertSelectedItem: 0,
-      isAlertOpen,
-      isMenuOpen: false
+      screenState: isAlertOpen ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
     });
   }
 
   goToMessages() {
     this.markAllMessagesAsRead();
     this.setState({
-      isAlertOpen: false,
-      isMenuOpen: true,
+      screenState: SCREEN_STATES.MENU,
       menuTitle: 'Messages',
       menuItems: []
     });
@@ -185,8 +182,7 @@ class Phone extends Component {
   goToMissedCalls() {
     this.markAllMissedCallsAsRead();
     this.setState({
-      isAlertOpen: false,
-      isMenuOpen: true,
+      screenState: SCREEN_STATES.MENU,
       menuTitle: 'Call history',
       menuItems: [],
       missedCallNotifications: []
@@ -201,11 +197,26 @@ class Phone extends Component {
       unreadMissedCallNotifications.length > 0 ?
       `Missed call${unreadMissedCallNotifications.length > 1 ? 's' : ''}` :
       '';
-    const alert = this.state.isAlertOpen ? <Alert title={alertTitle} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} /> : null;
-    const menu = this.state.isMenuOpen ? <Menu title={this.state.menuTitle} items={this.state.menuItems} /> : null;
+    const alert = <Alert title={alertTitle} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} />;
+    const menu = <Menu title={this.state.menuTitle} items={this.state.menuItems} />;
     const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messageNotifications} missedCallNotifications={this.state.missedCallNotifications} />;
-    const statusbar = this.state.isAlertOpen || this.state.isMenuOpen ? null : <Statusbar isLocked={this.state.isLocked} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} />;
-    const screen = this.state.isAlertOpen ? alert : this.state.isMenuOpen ? menu : homescreen;
+    const statusbar = this.state.screenState === SCREEN_STATES.HOMESCREEN ? <Statusbar isLocked={this.state.screenState === SCREEN_STATES.LOCKED} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} /> : null;
+
+    let screen;
+    switch(this.state.screenState) {
+      case SCREEN_STATES.HOMESCREEN:
+        screen = homescreen;
+        break;
+      case SCREEN_STATES.ALERT:
+        screen = alert;
+        break;
+      case SCREEN_STATES.MENU:
+        screen = menu;
+        break;
+      default:
+        screen = homescreen;
+        break;
+    }
 
     return (
         <div className="Phone">
