@@ -72,12 +72,14 @@ class Phone extends Component {
   }
 
   handleUpClick() {
+    if (this.state.isLocked) { return; }
     this.setState({
       alertSelectedItem: this.state.alertSelectedItem + (this.state.alertSelectedItem < 1 ? 0 : -1)
     });
   }
 
   handleDownClick() {
+    if (this.state.isLocked) { return; }
     this.setState({
       alertSelectedItem: this.state.alertSelectedItem + (this.state.alertSelectedItem >= this.state.alertItems.length - 1 ? 0 : 1)
     });
@@ -88,6 +90,7 @@ class Phone extends Component {
   }
 
   handleSelectClick() {
+    if (this.state.isLocked) { return; }
     if (this.state.isAlertOpen) {
       if (this.state.alertItems[this.state.alertSelectedItem] === 'View') {
         if (this.state.alertType === 'messages') {
@@ -102,6 +105,7 @@ class Phone extends Component {
   }
 
   handleEndCallClick() {
+    if (this.state.isLocked) { return; }
     if (this.state.isAlertOpen) {
       this.markCurrentAlertsAsRead();
     } else {
@@ -110,6 +114,7 @@ class Phone extends Component {
   }
 
   handleCallClick() {
+    if (this.state.isLocked) { return; }
     if (this.state.isMenuOpen || this.state.isAlertOpen) {
       return;
     }
