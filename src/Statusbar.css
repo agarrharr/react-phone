@@ -20,21 +20,21 @@
   margin-right: 5px;
   margin-top: 5px;
 }
-.Statusbar--Signal {
+.Statusbar__Icon--signal {
   background-image: url(/signal.svg);
 }
-.Statusbar--Lock {
+.Statusbar__Icon--lock {
   background-image: url(/lock.svg);
 }
-.Statusbar--Vibrate {
+.Statusbar__Icon--vibrate {
   background-image: url(/vibrate.svg);
 }
-.Statusbar--Battery {
+.Statusbar__Icon--battery {
   background-image: url(/battery.svg);
   height: 20px;
   width: 20px;
   margin-top: 3px;
 }
-.Statusbar--Bluetooth {
+.Statusbar__Icon--bluetooth {
   background-image: url(/bluetooth.svg);
 }
