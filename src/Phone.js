@@ -88,6 +88,13 @@ class Phone extends Component {
     });
   }
 
+  handleLockClick() {
+    const isLocked = (this.state.screenState === SCREEN_STATES.HOMESCREEN) ? this.state.isLocked : !this.state.isLocked;
+    this.setState({
+      screenState: isLocked ? SCREEN_STATES.LOCKED : this.isUnreadNotifications() ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
+    });
+  }
+
   handleSelectClick() {
     if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
     if (this.state.screenState === SCREEN_STATES.ALERT) {
@@ -105,18 +112,25 @@ class Phone extends Component {
     }
   }
 
-  viewAlert() {
-    if (this.getAlertType() === 'messages') {
-      this.goToMessages();
-    } else if (this.getAlertType() === 'missed calls') {
-      this.goToMissedCalls();
-    }
+  handleEndCallClick() {
+    if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
+    this.setState({
+      screenState: this.isUnreadNotifications() ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
+    });
   }
 
   handleCallClick() {
     if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
     if (this.state.screenState !== SCREEN_STATES.HOMESCREEN) { return; }
     this.goToMissedCalls();
+  }
+
+  viewAlert() {
+    if (this.getAlertType() === 'messages') {
+      this.goToMessages();
+    } else if (this.getAlertType() === 'missed calls') {
+      this.goToMissedCalls();
+    }
   }
 
   cancelAlert() {
@@ -136,20 +150,6 @@ class Phone extends Component {
       missedCalls,
       messages,
       screenState: (currentUnreadMessages || currentUnreadMissedCalls) ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
-    });
-  }
-
-  handleLockClick() {
-    const isLocked = (this.state.screenState === SCREEN_STATES.HOMESCREEN) ? this.state.isLocked : !this.state.isLocked;
-    this.setState({
-      screenState: isLocked ? SCREEN_STATES.LOCKED : this.isUnreadNotifications() ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
-    });
-  }
-
-  handleEndCallClick() {
-    if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
-    this.setState({
-      screenState: this.isUnreadNotifications() ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
     });
   }
 
@@ -173,6 +173,7 @@ class Phone extends Component {
    return this.unreadMissedCallNotifications().length > 0;
   }
 
+  // TODO: move this into Alert
   getAlertType() {
     return this.hasUnreadMessages() ? 'messages' : this.hasUnreadMissedCalls() ? 'missed calls' : null;
   }

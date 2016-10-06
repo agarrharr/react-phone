@@ -6,6 +6,7 @@ const Statusbar = ({isLocked, volumeLevel, batteryLevel, isBluetoothOn, carrier 
   const lock = isLocked ? <div className="Statusbar__Icon Statusbar--Lock"></div>: null;
   const volume = volumeLevel === 0 ? <div className="Statusbar__Icon Statusbar--Vibrate"></div> : null;
   const battery = <div className="Statusbar__Icon Statusbar--Battery"></div>;
+
   return (
     <div className="Statusbar">
       <div className="Statusbar__Left">
