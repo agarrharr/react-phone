@@ -11,12 +11,11 @@ const Buttons = ({
     }) => {
     return (
         <div className="Buttons">
-          <div className="Buttons__button Buttons--lock" onClick={onLockClick}></div>
-          <div className="Buttons__button" onClick={onUpClick}>Up</div>
-          <div className="Buttons__button" onClick={onSelectClick}>Select</div>
-          <div className="Buttons__button" onClick={onDownClick}>Down</div>
-          <div className="Buttons__button" onClick={onCallClick}>Call</div>
-          <div className="Buttons__button" onClick={onEndCallClick}>End</div>
+          <div className="Buttons__Button" onClick={onUpClick}>Up</div>
+          <div className="Buttons__Button" onClick={onSelectClick}>Select</div>
+          <div className="Buttons__Button" onClick={onDownClick}>Down</div>
+          <div className="Buttons__Button" onClick={onCallClick}>Call</div>
+          <div className="Buttons__Button" onClick={onEndCallClick}>End</div>
         </div>
     );
 }

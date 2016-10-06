@@ -241,7 +241,6 @@ class Phone extends Component {
           <Buttons
             onUpClick={this.handleUpClick}
             onDownClick={this.handleDownClick}
-            onLockClick={this.handleLockClick}
             onSelectClick={this.handleSelectClick}
             onEndCallClick={this.handleEndCallClick}
             onCallClick={this.handleCallClick}
