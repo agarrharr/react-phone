@@ -84,6 +84,11 @@ class Phone extends Component {
   handleSelectClick() {
     if (this.state.isAlertOpen) {
       if (this.state.alertItems[this.state.alertSelectedItem] === 'View') {
+        if (this.state.alertType === 'messages') {
+          this.goToMessages();
+        } else if (this.state.alertType === 'missed calls') {
+          this.goToMissedCalls();
+        }
       } else {
         if (this.state.alertType === 'messages') {
           this.markAllMessagesAsRead();
@@ -130,6 +135,11 @@ class Phone extends Component {
     });
   }
 
+  goToMessages() {
+  }
+
+  goToMissedCalls() {
+  }
   render() {
     const alert = <Alert title={this.state.alertTitle} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} />;
     const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messageNotifications} missedCallNotifications={this.state.missedCallNotifications} />;
