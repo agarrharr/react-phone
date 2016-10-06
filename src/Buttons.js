@@ -5,7 +5,8 @@ const Buttons = ({
         onUpClick,
         onDownClick,
         onUnlockClick,
-        onSelectClick
+        onSelectClick,
+        onEndCallClick
     }) => {
     return (
         <div className="Buttons">
@@ -13,6 +14,7 @@ const Buttons = ({
           <div className="Buttons__button" onClick={onUpClick}>Up</div>
           <div className="Buttons__button" onClick={onSelectClick}>Select</div>
           <div className="Buttons__button" onClick={onDownClick}>Down</div>
+          <div className="Buttons__button" onClick={onEndCallClick}>End call</div>
         </div>
     );
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Alert from './Alert';
+import Menu from './Menu';
 import Statusbar from './Statusbar';
 import Homescreen from './Homescreen';
 import Buttons from './Buttons';
@@ -17,6 +18,9 @@ class Phone extends Component {
       // TODO: move this into Alert
       alertSelectedItem: 0,
       isAlertOpen: false,
+      isMenuOpen: false,
+      menuTitle: '',
+      menuItems: [],
       date: new Date(),
       settings: {
         isMilitaryTime: true,
@@ -51,6 +55,7 @@ class Phone extends Component {
     this.handleDownClick = this.handleDownClick.bind(this);
     this.handleUnlockClick = this.handleUnlockClick.bind(this);
     this.handleSelectClick = this.handleSelectClick.bind(this);
+    this.handleEndCallClick = this.handleEndCallClick.bind(this);
   }
 
   componentWillMount() {
@@ -91,24 +96,28 @@ class Phone extends Component {
         }
       } else {
         if (this.state.alertType === 'messages') {
-          this.markAllMessagesAsRead();
+          this.markAllMessagesAsRead(this.goHome);
         } else if (this.state.alertType === 'missed calls') {
-          this.markAllMissedCallsAsRead();
+          this.markAllMissedCallsAsRead(this.goHome);
         }
       }
     }
   }
 
-  markAllMessagesAsRead() {
-    this.setState({
-      messageNotifications: this.state.messageNotifications.map(n => ({message: n.message, hasShownAlert: true}))
-    }, this.goHome);
+  handleEndCallClick() {
+    this.goHome();
   }
 
-  markAllMissedCallsAsRead() {
+  markAllMessagesAsRead(callback) {
+    this.setState({
+      messageNotifications: this.state.messageNotifications.map(n => ({message: n.message, hasShownAlert: true}))
+    }, callback);
+  }
+
+  markAllMissedCallsAsRead(callback) {
     this.setState({
       missedCallNotifications: this.state.missedCallNotifications.map(n => ({message: n.message, hasShownAlert: true}))
-    }, this.goHome);
+    }, callback);
   }
 
   goHome() {
@@ -131,20 +140,37 @@ class Phone extends Component {
       alertType,
       alertItems: ['View', 'Cancel'],
       alertSelectedItem: 0,
-      isAlertOpen
+      isAlertOpen,
+      isMenuOpen: false
     });
   }
 
   goToMessages() {
+    this.markAllMessagesAsRead();
+    this.setState({
+      isAlertOpen: false,
+      isMenuOpen: true,
+      menuTitle: 'Messages',
+      menuItems: []
+    });
   }
 
   goToMissedCalls() {
+    this.markAllMissedCallsAsRead();
+    this.setState({
+      isAlertOpen: false,
+      isMenuOpen: true,
+      menuTitle: 'Call history',
+      menuItems: []
+    });
   }
+
   render() {
-    const alert = <Alert title={this.state.alertTitle} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} />;
+    const alert = this.state.isAlertOpen ? <Alert title={this.state.alertTitle} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} /> : null;
+    const menu = this.state.isMenuOpen ? <Menu title={this.state.menuTitle} items={this.state.menuItems} /> : null;
     const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messageNotifications} missedCallNotifications={this.state.missedCallNotifications} />;
-    const statusbar = this.state.isAlertOpen ? null : <Statusbar isLocked={this.state.isLocked} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} />;
-    const screen = this.state.isAlertOpen ? alert : homescreen;
+    const statusbar = this.state.isAlertOpen || this.state.isMenuOpen ? null : <Statusbar isLocked={this.state.isLocked} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} />;
+    const screen = this.state.isAlertOpen ? alert : this.state.isMenuOpen ? menu : homescreen;
 
     return (
         <div className="Phone">
@@ -157,6 +183,7 @@ class Phone extends Component {
             onDownClick={this.handleDownClick}
             onUnlockClick={this.handleUnlockClick}
             onSelectClick={this.handleSelectClick}
+            onEndCallClick={this.handleEndCallClick}
           />
         </div>
     );
