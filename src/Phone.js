@@ -35,7 +35,7 @@ class Phone extends Component {
       info: {
         carrier: 'T-Mobile'
       },
-      messageNotifications: [
+      messages: [
         {
           message: 'Douglas Adams Mobile',
           hasShownAlert: false
@@ -45,7 +45,7 @@ class Phone extends Component {
           hasShownAlert: false
         },
       ],
-      missedCallNotifications: [
+      missedCalls: [
         {
           message: 'Douglas Adams Mobile',
           hasShownAlert: false
@@ -104,7 +104,17 @@ class Phone extends Component {
           this.goToMissedCalls();
         }
       } else if (this.state.alertItems[this.state.alertSelectedItem] === 'Cancel') {
-        this.markCurrentAlertsAsRead();
+        if (this.getAlertType() === 'messages') {
+          this.setState({
+            messages: this.state.messages.map(n => ({message: n.message, hasShownAlert: true})),
+            screenState: SCREEN_STATES.HOMESCREEN
+          });
+        } else if (this.getAlertType() === 'missed calls') {
+          this.setState({
+            missedCalls: this.state.missedCalls.map(n => ({message: n.message, hasShownAlert: true})),
+            screenState: SCREEN_STATES.HOMESCREEN
+          });
+        }
       }
     }
   }
@@ -120,29 +130,9 @@ class Phone extends Component {
     this.goToMissedCalls();
   }
 
-  markCurrentAlertsAsRead() {
-    if (this.getAlertType() === 'messages') {
-      this.markAllMessagesAsRead(this.goHome);
-    } else if (this.getAlertType() === 'missed calls') {
-      this.markAllMissedCallsAsRead(this.goHome);
-    }
-  }
-
-  markAllMessagesAsRead(callback) {
-    this.setState({
-      messageNotifications: this.state.messageNotifications.map(n => ({message: n.message, hasShownAlert: true}))
-    }, callback);
-  }
-
-  markAllMissedCallsAsRead(callback) {
-    this.setState({
-      missedCallNotifications: this.state.missedCallNotifications.map(n => ({message: n.message, hasShownAlert: true}))
-    }, callback);
-  }
-
   goHome() {
-    const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
-    const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
+    const unreadMessageNotifications = this.state.messages.filter(notification => !notification.hasShownAlert);
+    const unreadMissedCallNotifications = this.state.missedCalls.filter(notification => !notification.hasShownAlert);
     const hasUnreadMessages = unreadMessageNotifications.length > 0;
     const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
     const isAlertOpen = hasUnreadMessages || hasUnreadMissedCalls;
@@ -155,8 +145,8 @@ class Phone extends Component {
   }
 
   getAlertType() {
-    const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
-    const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
+    const unreadMessageNotifications = this.state.messages.filter(notification => !notification.hasShownAlert);
+    const unreadMissedCallNotifications = this.state.missedCalls.filter(notification => !notification.hasShownAlert);
     const hasUnreadMessages = unreadMessageNotifications.length > 0;
     const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
     const alertType = hasUnreadMessages ? 'messages' : hasUnreadMissedCalls ? 'missed calls' : null;
@@ -164,8 +154,8 @@ class Phone extends Component {
   }
 
   goToMessages() {
-    this.markAllMessagesAsRead();
     this.setState({
+      messages: this.state.messages.map(n => ({message: n.message, hasShownAlert: true})),
       screenState: SCREEN_STATES.MENU,
       menuTitle: 'Messages',
       menuItems: []
@@ -173,18 +163,17 @@ class Phone extends Component {
   }
 
   goToMissedCalls() {
-    this.markAllMissedCallsAsRead();
     this.setState({
+      missedCalls: [],
       screenState: SCREEN_STATES.MENU,
       menuTitle: 'Call history',
-      menuItems: [],
-      missedCallNotifications: []
+      menuItems: []
     });
   }
 
   render() {
-    const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
-    const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
+    const unreadMessageNotifications = this.state.messages.filter(notification => !notification.hasShownAlert);
+    const unreadMissedCallNotifications = this.state.missedCalls.filter(notification => !notification.hasShownAlert);
     const alertTitle = unreadMessageNotifications.length > 0 ?
       `New message${unreadMessageNotifications.length > 1 ? 's' : ''}` :
       unreadMissedCallNotifications.length > 0 ?
@@ -192,7 +181,7 @@ class Phone extends Component {
       '';
     const alert = <Alert title={alertTitle} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} />;
     const menu = <Menu title={this.state.menuTitle} items={this.state.menuItems} />;
-    const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messageNotifications} missedCallNotifications={this.state.missedCallNotifications} />;
+    const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messages} missedCallNotifications={this.state.missedCalls} />;
     const statusbar = this.state.screenState === SCREEN_STATES.HOMESCREEN ? <Statusbar isLocked={this.state.screenState === SCREEN_STATES.LOCKED} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} /> : null;
 
     let screen;
