@@ -3,8 +3,28 @@ import './Homescreen.css';
 import {FormattedDate, FormattedTime} from 'react-intl';
 
 const Homescreen = ({date, isMilitaryTime, messageNotifications, missedCallNotifications}) => {
-  let messageNotificationMessage = `New message: ${messageNotifications[0].message}`;
-  let missedCallNotificationMessage = ``;
+  const messageNotificationMessage = getMessageNotificationMessage(messageNotifications);
+  const missedCallNotificationMessage = getMissedCallNotificationMessage(missedCallNotifications);
+
+  function getMessageNotificationMessage(notifications) {
+    if (notifications.length === 1) {
+      return `New message: ${notifications[0].message}`;
+    } else if (notifications.length > 1) {
+      return `${notifications.length} new messages`;
+    } else {
+      return null;
+    }
+  }
+
+  function getMissedCallNotificationMessage(notifications) {
+    if (notifications.length === 1) {
+      return `Missed call: ${notifications[0].message}`;
+    } else if (notifications.length > 1) {
+      return `${notifications.length} missed calls`;
+    } else {
+      return null;
+    }
+  }
 
   return (
     <div className="Home">
@@ -37,8 +57,8 @@ const Homescreen = ({date, isMilitaryTime, messageNotifications, missedCallNotif
         </div>
       </div>
       <div className="Home__Notifications">
-      {messageNotificationMessage}
-      {missedCallNotificationMessage}
+      <div>{messageNotificationMessage}</div>
+      <div>{missedCallNotificationMessage}</div>
       </div>
     </div>
   );

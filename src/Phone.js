@@ -30,7 +30,11 @@ class Phone extends Component {
         {
           message: 'Douglas Adams Mobile',
           hasShownMenu: false
-        }
+        },
+        {
+          message: 'Steve Wozniak Mobile',
+          hasShownMenu: false
+        },
       ],
       missedCallNotifications: [
         {
