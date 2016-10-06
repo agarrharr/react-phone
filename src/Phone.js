@@ -139,10 +139,10 @@ class Phone extends Component {
     let currentUnreadMessages = this.hasUnreadMessages();
     let currentUnreadMissedCalls = this.hasUnreadMissedCalls();
     if (this.getAlertType() === 'messages') {
-      messages = this.state.messages.map(n => Object.assign({}, n, {hasShownAlert: true}));
+      messages = this.state.messages.map(message => ({...message, hasShownAlert: true}));
       currentUnreadMessages = false;
     } else if (this.getAlertType() === 'missed calls') {
-      missedCalls = this.state.missedCalls.map(n => Object.assign({}, n, {hasShownAlert: true}));
+      missedCalls = this.state.missedCalls.map(missedCall => ({...missedCall, hasShownAlert: true}));
       currentUnreadMissedCalls = false;
     }
     this.setState({
