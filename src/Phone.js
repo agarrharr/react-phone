@@ -202,7 +202,15 @@ class Phone extends Component {
   }
 
   render() {
-    const statusbar = this.state.screenState === SCREEN_STATES.HOMESCREEN ? <Statusbar isLocked={this.state.screenState === SCREEN_STATES.LOCKED} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} /> : null;
+    const statusbar = this.state.screenState === SCREEN_STATES.HOMESCREEN ?
+        <Statusbar
+          isLocked={this.state.screenState === SCREEN_STATES.LOCKED}
+          volumeLevel={this.state.volumeLevel}
+          batteryLevel={this.state.batteryLevel}
+          isBluetoothOn={this.state.isBluetoothOn}
+          carrier={this.state.info.carrier}
+        /> :
+      null;
 
     return (
         <div className="Phone">
