@@ -18,7 +18,7 @@ class Phone extends Component {
     super(...arguments);
 
     this.state = {
-      alertItems: [],
+      alertItems: ['View', 'Cancel'],
       alertSelectedItem: 0,
       screenState: SCREEN_STATES.HOMESCREEN,
       menuTitle: '',
@@ -98,26 +98,39 @@ class Phone extends Component {
   handleSelectClick() {
     if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
     if (this.state.screenState === SCREEN_STATES.ALERT) {
-      if (this.state.alertItems[this.state.alertSelectedItem] === 'View') {
-        if (this.getAlertType() === 'messages') {
-          this.goToMessages();
-        } else if (this.getAlertType() === 'missed calls') {
-          this.goToMissedCalls();
-        }
-      } else if (this.state.alertItems[this.state.alertSelectedItem] === 'Cancel') {
-        if (this.getAlertType() === 'messages') {
-          this.setState({
-            messages: this.state.messages.map(n => Object.assign({}, n, {hasShownAlert: true})),
-            screenState: SCREEN_STATES.HOMESCREEN
-          });
-        } else if (this.getAlertType() === 'missed calls') {
-          this.setState({
-            missedCalls: this.state.missedCalls.map(n => Object.assign({}, n, {hasShownAlert: true})),
-            screenState: SCREEN_STATES.HOMESCREEN
-          });
-        }
+    const selectedAlertItem = this.state.alertItems[this.state.alertSelectedItem];
+      switch(selectedAlertItem) {
+        case 'View':
+          this.viewAlert();
+          break;
+        case 'Cancel':
+          this.cancelAlert();
+        default:
+          this.cancelAlert();
       }
     }
+  }
+
+  viewAlert() {
+    if (this.getAlertType() === 'messages') {
+      this.goToMessages();
+    } else if (this.getAlertType() === 'missed calls') {
+      this.goToMissedCalls();
+    }
+  }
+
+  cancelAlert() {
+    let missedCalls = this.state.missedCalls;
+    let messages = this.state.messages;
+    if (this.getAlertType() === 'messages') {
+      messages = this.state.messages.map(n => Object.assign({}, n, {hasShownAlert: true}));
+    } else if (this.getAlertType() === 'missed calls') {
+      missedCalls = this.state.missedCalls.map(n => Object.assign({}, n, {hasShownAlert: true}));
+    }
+    this.setState({
+      missedCalls,
+      messages,
+    }, this.goHome);
   }
 
   handleEndCallClick() {
@@ -133,7 +146,6 @@ class Phone extends Component {
 
   goHome() {
     this.setState({
-      alertItems: ['View', 'Cancel'],
       alertSelectedItem: 0,
       screenState: this.isAlertOpen() ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
     });
