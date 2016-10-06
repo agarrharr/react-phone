@@ -13,7 +13,6 @@ class Phone extends Component {
 
     this.state = {
       alertType: '',
-      alertTitle: '',
       alertItems: [],
       // TODO: move this into Alert
       alertSelectedItem: 0,
@@ -86,7 +85,8 @@ class Phone extends Component {
   }
 
   handleLockClick() {
-    this.setState({isLocked: (this.state.isAlertOpen || this.state.isMenuOpen) ? this.state.isLocked : !this.state.isLocked}, this.goHome);
+    const isLocked = (this.state.isAlertOpen || this.state.isMenuOpen) ? this.state.isLocked : !this.state.isLocked;
+    this.setState({isLocked}, this.goHome);
   }
 
   handleSelectClick() {
@@ -145,29 +145,19 @@ class Phone extends Component {
     this.setState({
       isAlertOpen: false,
       isMenuOpen: false
-    }, this.showAlerts);
+    });
+    this.showAlerts();
   }
 
   showAlerts() {
     const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
     const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
-    let alertTitle = '';
-    let alertType = '';
-    let isAlertOpen = true;
-    if (this.state.isMenuOpen || this.state.isAlertOpen) {
-      return;
-    }
-    if (unreadMessageNotifications.length > 0) {
-      alertTitle = `New message${unreadMessageNotifications.length > 1 ? 's' : ''}`;
-      alertType = 'messages';
-    } else if (unreadMissedCallNotifications.length > 0) {
-      alertTitle = `Missed call${unreadMissedCallNotifications.length > 1 ? 's' : ''}`;
-      alertType = 'missed calls';
-    } else {
-      isAlertOpen = false;
-    }
+    const hasUnreadMessages = unreadMessageNotifications.length > 0;
+    const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
+    const alertType = hasUnreadMessages ? 'messages' : hasUnreadMissedCalls ? 'missed calls' : null;
+    const isAlertOpen = hasUnreadMessages || hasUnreadMissedCalls;
+
     this.setState({
-      alertTitle,
       alertType,
       alertItems: ['View', 'Cancel'],
       alertSelectedItem: 0,
@@ -198,7 +188,14 @@ class Phone extends Component {
   }
 
   render() {
-    const alert = this.state.isAlertOpen ? <Alert title={this.state.alertTitle} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} /> : null;
+    const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
+    const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
+    const alertTitle = this.state.alertType === 'messages' ?
+      `New message${unreadMessageNotifications.length > 1 ? 's' : ''}` :
+      this.state.alertType === 'missed calls' ?
+      `Missed call${unreadMissedCallNotifications.length > 1 ? 's' : ''}` :
+      '';
+    const alert = this.state.isAlertOpen ? <Alert title={alertTitle} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} /> : null;
     const menu = this.state.isMenuOpen ? <Menu title={this.state.menuTitle} items={this.state.menuItems} /> : null;
     const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messageNotifications} missedCallNotifications={this.state.missedCallNotifications} />;
     const statusbar = this.state.isAlertOpen || this.state.isMenuOpen ? null : <Statusbar isLocked={this.state.isLocked} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} />;
