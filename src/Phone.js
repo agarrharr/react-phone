@@ -141,22 +141,6 @@ class Phone extends Component {
   }
 
   goHome() {
-    this.setState({
-      screenState: SCREEN_STATES.HOMESCREEN
-    });
-    this.showAlerts();
-  }
-
-  getAlertType() {
-    const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
-    const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
-    const hasUnreadMessages = unreadMessageNotifications.length > 0;
-    const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
-    const alertType = hasUnreadMessages ? 'messages' : hasUnreadMissedCalls ? 'missed calls' : null;
-    return alertType;
-  }
-
-  showAlerts() {
     const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
     const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
     const hasUnreadMessages = unreadMessageNotifications.length > 0;
@@ -168,6 +152,15 @@ class Phone extends Component {
       alertSelectedItem: 0,
       screenState: isAlertOpen ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
     });
+  }
+
+  getAlertType() {
+    const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
+    const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
+    const hasUnreadMessages = unreadMessageNotifications.length > 0;
+    const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
+    const alertType = hasUnreadMessages ? 'messages' : hasUnreadMissedCalls ? 'missed calls' : null;
+    return alertType;
   }
 
   goToMessages() {
