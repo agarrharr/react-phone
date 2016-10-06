@@ -152,8 +152,7 @@ class Phone extends Component {
     const unreadMissedCallNotifications = this.state.missedCalls.filter(notification => !notification.hasShownAlert);
     const hasUnreadMessages = unreadMessageNotifications.length > 0;
     const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
-    const alertType = hasUnreadMessages ? 'messages' : hasUnreadMissedCalls ? 'missed calls' : null;
-    return alertType;
+    return hasUnreadMessages ? 'messages' : hasUnreadMissedCalls ? 'missed calls' : null;
   }
 
   getAlertTitle() {
