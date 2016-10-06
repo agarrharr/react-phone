@@ -132,17 +132,19 @@ class Phone extends Component {
   }
 
   goHome() {
+    this.setState({
+      alertItems: ['View', 'Cancel'],
+      alertSelectedItem: 0,
+      screenState: this.isAlertOpen() ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
+    });
+  }
+
+  isAlertOpen() {
     const unreadMessageNotifications = this.state.messages.filter(notification => !notification.hasShownAlert);
     const unreadMissedCallNotifications = this.state.missedCalls.filter(notification => !notification.hasShownAlert);
     const hasUnreadMessages = unreadMessageNotifications.length > 0;
     const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
-    const isAlertOpen = hasUnreadMessages || hasUnreadMissedCalls;
-
-    this.setState({
-      alertItems: ['View', 'Cancel'],
-      alertSelectedItem: 0,
-      screenState: isAlertOpen ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
-    });
+    return hasUnreadMessages || hasUnreadMissedCalls;
   }
 
   getAlertType() {
@@ -152,6 +154,16 @@ class Phone extends Component {
     const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
     const alertType = hasUnreadMessages ? 'messages' : hasUnreadMissedCalls ? 'missed calls' : null;
     return alertType;
+  }
+
+  getAlertTitle() {
+    const unreadMessageNotifications = this.state.messages.filter(notification => !notification.hasShownAlert);
+    const unreadMissedCallNotifications = this.state.missedCalls.filter(notification => !notification.hasShownAlert);
+    return unreadMessageNotifications.length > 0 ?
+      `New message${unreadMessageNotifications.length > 1 ? 's' : ''}` :
+      unreadMissedCallNotifications.length > 0 ?
+      `Missed call${unreadMissedCallNotifications.length > 1 ? 's' : ''}` :
+      '';
   }
 
   goToMessages() {
@@ -172,40 +184,31 @@ class Phone extends Component {
     });
   }
 
-  render() {
-    const unreadMessageNotifications = this.state.messages.filter(notification => !notification.hasShownAlert);
-    const unreadMissedCallNotifications = this.state.missedCalls.filter(notification => !notification.hasShownAlert);
-    const alertTitle = unreadMessageNotifications.length > 0 ?
-      `New message${unreadMessageNotifications.length > 1 ? 's' : ''}` :
-      unreadMissedCallNotifications.length > 0 ?
-      `Missed call${unreadMissedCallNotifications.length > 1 ? 's' : ''}` :
-      '';
-    const alert = <Alert title={alertTitle} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} />;
+  getScreen() {
+    const alert = <Alert title={this.getAlertTitle()} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} />;
     const menu = <Menu title={this.state.menuTitle} items={this.state.menuItems} />;
     const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messages} missedCallNotifications={this.state.missedCalls} />;
-    const statusbar = this.state.screenState === SCREEN_STATES.HOMESCREEN ? <Statusbar isLocked={this.state.screenState === SCREEN_STATES.LOCKED} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} /> : null;
 
-    let screen;
     switch(this.state.screenState) {
       case SCREEN_STATES.HOMESCREEN:
-        screen = homescreen;
-        break;
+        return homescreen;
       case SCREEN_STATES.ALERT:
-        screen = alert;
-        break;
+        return alert;
       case SCREEN_STATES.MENU:
-        screen = menu;
-        break;
+        return menu;
       default:
-        screen = homescreen;
-        break;
+        return homescreen;
     }
+  }
+
+  render() {
+    const statusbar = this.state.screenState === SCREEN_STATES.HOMESCREEN ? <Statusbar isLocked={this.state.screenState === SCREEN_STATES.LOCKED} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} /> : null;
 
     return (
         <div className="Phone">
           <div className="Phone__screen">
             {statusbar}
-            {screen}
+            {this.getScreen()}
           </div>
           <Buttons
             onUpClick={this.handleUpClick}
