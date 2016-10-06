@@ -27,7 +27,7 @@ class Phone extends Component {
         showCarrier: true
       },
       batteryLevel: 100,
-      isBluetoothOn: false,
+      isBluetoothOn: true,
       volumeLevel: 0,
       info: {
         carrier: 'T-Mobile'
