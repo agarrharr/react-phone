@@ -12,7 +12,6 @@ class Phone extends Component {
     super(...arguments);
 
     this.state = {
-      alertType: '',
       alertItems: [],
       // TODO: move this into Alert
       alertSelectedItem: 0,
@@ -93,9 +92,9 @@ class Phone extends Component {
     if (this.state.isLocked) { return; }
     if (this.state.isAlertOpen) {
       if (this.state.alertItems[this.state.alertSelectedItem] === 'View') {
-        if (this.state.alertType === 'messages') {
+        if (this.getAlertType() === 'messages') {
           this.goToMessages();
-        } else if (this.state.alertType === 'missed calls') {
+        } else if (this.getAlertType() === 'missed calls') {
           this.goToMissedCalls();
         }
       } else if (this.state.alertItems[this.state.alertSelectedItem] === 'Cancel') {
@@ -122,9 +121,9 @@ class Phone extends Component {
   }
 
   markCurrentAlertsAsRead() {
-    if (this.state.alertType === 'messages') {
+    if (this.getAlertType() === 'messages') {
       this.markAllMessagesAsRead(this.goHome);
-    } else if (this.state.alertType === 'missed calls') {
+    } else if (this.getAlertType() === 'missed calls') {
       this.markAllMissedCallsAsRead(this.goHome);
     }
   }
@@ -149,16 +148,23 @@ class Phone extends Component {
     this.showAlerts();
   }
 
-  showAlerts() {
+  getAlertType() {
     const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
     const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
     const hasUnreadMessages = unreadMessageNotifications.length > 0;
     const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
     const alertType = hasUnreadMessages ? 'messages' : hasUnreadMissedCalls ? 'missed calls' : null;
+    return alertType;
+  }
+
+  showAlerts() {
+    const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
+    const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
+    const hasUnreadMessages = unreadMessageNotifications.length > 0;
+    const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
     const isAlertOpen = hasUnreadMessages || hasUnreadMissedCalls;
 
     this.setState({
-      alertType,
       alertItems: ['View', 'Cancel'],
       alertSelectedItem: 0,
       isAlertOpen,
@@ -190,9 +196,9 @@ class Phone extends Component {
   render() {
     const unreadMessageNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
     const unreadMissedCallNotifications = this.state.missedCallNotifications.filter(notification => !notification.hasShownAlert);
-    const alertTitle = this.state.alertType === 'messages' ?
+    const alertTitle = unreadMessageNotifications.length > 0 ?
       `New message${unreadMessageNotifications.length > 1 ? 's' : ''}` :
-      this.state.alertType === 'missed calls' ?
+      unreadMissedCallNotifications.length > 0 ?
       `Missed call${unreadMissedCallNotifications.length > 1 ? 's' : ''}` :
       '';
     const alert = this.state.isAlertOpen ? <Alert title={alertTitle} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} /> : null;
