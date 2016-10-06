@@ -1,37 +1,37 @@
 import React from 'react';
 import cx from 'classnames';
-import './Menu.css';
+import './Alert.css';
 
-const Menu = ({
+const Alert = ({
   title,
   items,
   selectedItem
 }) => {
   const menuItems = items.map((item, key) =>
       <div className={cx({
-        'Menu__item': true,
-        'Menu__item--selected': key === selectedItem
+        'Alert__item': true,
+        'Alert__item--selected': key === selectedItem
       })} key={key}>
         {item}
       </div>
   );
 
   return (
-    <div className="Menu">
-      <div className="Menu__title">
+    <div className="Alert">
+      <div className="Alert__title">
         {title}
       </div>
-      <div className="Menu__items">
+      <div className="Alert__items">
         {menuItems}
       </div>
     </div>
   );
 };
 
-Menu.propTypes = {
+Alert.propTypes = {
   title: React.PropTypes.string.isRequired,
   items: React.PropTypes.array.isRequired,
   selectedItem: React.PropTypes.number.isRequired
 };
 
-export default Menu;
+export default Alert;

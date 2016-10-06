@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Menu from './Menu';
+import Alert from './Alert';
 import Statusbar from './Statusbar';
 import Homescreen from './Homescreen';
 import Buttons from './Buttons';
@@ -13,7 +13,7 @@ class Phone extends Component {
     this.state = {
       menuItems: ['View', 'Cancel'],
       selectedItem: 0,
-      isMenuOpen: false,
+      isAlertOpen: false,
       date: new Date(),
       settings: {
         isMilitaryTime: true,
@@ -29,17 +29,17 @@ class Phone extends Component {
       messageNotifications: [
         {
           message: 'Douglas Adams Mobile',
-          hasShownMenu: false
+          hasShownAlert: false
         },
         {
           message: 'Steve Wozniak Mobile',
-          hasShownMenu: false
+          hasShownAlert: false
         },
       ],
       missedCallNotifications: [
         {
           message: 'Douglas Adams Mobile',
-          hasShownMenu: false
+          hasShownAlert: false
         }
       ]
     };
@@ -74,23 +74,23 @@ class Phone extends Component {
   }
 
   handleUnlockClick() {
-    this.setState({isLocked: !this.state.isMenuOpen ? !this.state.isLocked : this.state.isLocked}, this.lockScreen);
+    this.setState({isLocked: !this.state.isAlertOpen ? !this.state.isLocked : this.state.isLocked}, this.lockScreen);
   }
 
   lockScreen() {
     if (!this.state.isLocked) {
-      const unshownNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownMenu);
+      const unshownNotifications = this.state.messageNotifications.filter(notification => !notification.hasShownAlert);
       if (unshownNotifications.length > 0) {
-        this.setState({isMenuOpen: true});
+        this.setState({isAlertOpen: true});
       }
     }
   }
 
   render() {
-    const menu = <Menu title="New message" items={this.state.menuItems} selectedItem={this.state.selectedItem} />;
+    const menu = <Alert title="New message" items={this.state.menuItems} selectedItem={this.state.selectedItem} />;
     const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messageNotifications} missedCallNotifications={this.state.missedCallNotifications} />;
-    const statusbar = this.state.isMenuOpen ? null : <Statusbar isLocked={this.state.isLocked} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} />;
-    const screen = this.state.isMenuOpen ? menu : homescreen;
+    const statusbar = this.state.isAlertOpen ? null : <Statusbar isLocked={this.state.isLocked} volumeLevel={this.state.volumeLevel} batteryLevel={this.state.batteryLevel} isBluetoothOn={this.state.isBluetoothOn} carrier={this.state.info.carrier} />;
+    const screen = this.state.isAlertOpen ? menu : homescreen;
 
     return (
         <div className="Phone">
