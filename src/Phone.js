@@ -88,13 +88,6 @@ class Phone extends Component {
     });
   }
 
-  handleLockClick() {
-    const isLocked = (this.state.screenState === SCREEN_STATES.HOMESCREEN) ? this.state.isLocked : !this.state.isLocked;
-    this.setState({
-      screenState: isLocked ? SCREEN_STATES.LOCKED : this.state.screenState
-    }, this.goHome);
-  }
-
   handleSelectClick() {
     if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
     if (this.state.screenState === SCREEN_STATES.ALERT) {
@@ -105,6 +98,7 @@ class Phone extends Component {
           break;
         case 'Cancel':
           this.cancelAlert();
+          break;
         default:
           this.cancelAlert();
       }
@@ -119,61 +113,75 @@ class Phone extends Component {
     }
   }
 
-  cancelAlert() {
-    let missedCalls = this.state.missedCalls;
-    let messages = this.state.messages;
-    if (this.getAlertType() === 'messages') {
-      messages = this.state.messages.map(n => Object.assign({}, n, {hasShownAlert: true}));
-    } else if (this.getAlertType() === 'missed calls') {
-      missedCalls = this.state.missedCalls.map(n => Object.assign({}, n, {hasShownAlert: true}));
-    }
-    this.setState({
-      missedCalls,
-      messages,
-    }, this.goHome);
-  }
-
-  handleEndCallClick() {
-    if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
-    this.goHome();
-  }
-
   handleCallClick() {
     if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
     if (this.state.screenState !== SCREEN_STATES.HOMESCREEN) { return; }
     this.goToMissedCalls();
   }
 
-  goHome() {
+  cancelAlert() {
+    let missedCalls = this.state.missedCalls;
+    let messages = this.state.messages;
+    let currentUnreadMessages = this.hasUnreadMessages();
+    let currentUnreadMissedCalls = this.hasUnreadMissedCalls();
+    if (this.getAlertType() === 'messages') {
+      messages = this.state.messages.map(n => Object.assign({}, n, {hasShownAlert: true}));
+      currentUnreadMessages = false;
+    } else if (this.getAlertType() === 'missed calls') {
+      missedCalls = this.state.missedCalls.map(n => Object.assign({}, n, {hasShownAlert: true}));
+      currentUnreadMissedCalls = false;
+    }
     this.setState({
       alertSelectedItem: 0,
-      screenState: this.isAlertOpen() ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
+      missedCalls,
+      messages,
+      screenState: (currentUnreadMessages || currentUnreadMissedCalls) ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
     });
   }
 
-  isAlertOpen() {
-    const unreadMessageNotifications = this.state.messages.filter(notification => !notification.hasShownAlert);
-    const unreadMissedCallNotifications = this.state.missedCalls.filter(notification => !notification.hasShownAlert);
-    const hasUnreadMessages = unreadMessageNotifications.length > 0;
-    const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
-    return hasUnreadMessages || hasUnreadMissedCalls;
+  handleLockClick() {
+    const isLocked = (this.state.screenState === SCREEN_STATES.HOMESCREEN) ? this.state.isLocked : !this.state.isLocked;
+    this.setState({
+      screenState: isLocked ? SCREEN_STATES.LOCKED : this.isUnreadNotifications() ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
+    });
+  }
+
+  handleEndCallClick() {
+    if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
+    this.setState({
+      screenState: this.isUnreadNotifications() ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
+    });
+  }
+
+  isUnreadNotifications() {
+    return this.hasUnreadMessages() || this.hasUnreadMissedCalls();
+  }
+
+  unreadMessageNotifications() {
+    return this.state.messages.filter(notification => !notification.hasShownAlert);
+  }
+
+  unreadMissedCallNotifications() {
+    return this.state.missedCalls.filter(notification => !notification.hasShownAlert);
+  }
+
+  hasUnreadMessages() {
+   return this.unreadMessageNotifications().length > 0;
+  }
+
+  hasUnreadMissedCalls() {
+   return this.unreadMissedCallNotifications().length > 0;
   }
 
   getAlertType() {
-    const unreadMessageNotifications = this.state.messages.filter(notification => !notification.hasShownAlert);
-    const unreadMissedCallNotifications = this.state.missedCalls.filter(notification => !notification.hasShownAlert);
-    const hasUnreadMessages = unreadMessageNotifications.length > 0;
-    const hasUnreadMissedCalls = unreadMissedCallNotifications.length > 0;
-    return hasUnreadMessages ? 'messages' : hasUnreadMissedCalls ? 'missed calls' : null;
+    return this.hasUnreadMessages() ? 'messages' : this.hasUnreadMissedCalls() ? 'missed calls' : null;
   }
 
   getAlertTitle() {
-    const unreadMessageNotifications = this.state.messages.filter(notification => !notification.hasShownAlert);
-    const unreadMissedCallNotifications = this.state.missedCalls.filter(notification => !notification.hasShownAlert);
-    return unreadMessageNotifications.length > 0 ?
-      `New message${unreadMessageNotifications.length > 1 ? 's' : ''}` :
-      unreadMissedCallNotifications.length > 0 ?
-      `Missed call${unreadMissedCallNotifications.length > 1 ? 's' : ''}` :
+    return this.unreadMessageNotifications().length > 0 ?
+      `New message${this.unreadMessageNotifications().length > 1 ? 's' : ''}` :
+      this.unreadMissedCallNotifications().length > 0 ?
+      `Missed call${this.unreadMissedCallNotifications().length > 1 ? 's' : ''}` :
       '';
   }
 
