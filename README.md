@@ -11,11 +11,19 @@ You can find the most recent version of this guide [here](https://github.com/fac
 
 ## Todo
 
+### Features
+
 - [ ] Build all the buttons and lay them out
 - [ ] Build outline around the phone
 - [ ] Build the Messages Menu
 - [ ] Build the Missed Calls Menu
 - [ ] Build the Settings Menu
+- [ ] Make the lock button turn the screen off and on as well
 - [ ] Make the signal icon change according to signal strength
 - [ ] Make the battery icon  change according to battery level and turn red when low
 - [ ] Have controls outside the phone to control signal, battery, calls, and messages received
+
+### Technology
+
+- [ ] Use Redux
+- [ ] Add tests

@@ -11,7 +11,7 @@ const Buttons = ({
     }) => {
     return (
         <div className="Buttons">
-          <div className="Buttons__button" onClick={onLockClick}>Unlock</div>
+          <div className="Buttons__button Buttons--lock" onClick={onLockClick}></div>
           <div className="Buttons__button" onClick={onUpClick}>Up</div>
           <div className="Buttons__button" onClick={onSelectClick}>Select</div>
           <div className="Buttons__button" onClick={onDownClick}>Down</div>
