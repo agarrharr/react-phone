@@ -103,9 +103,6 @@ class Phone extends Component {
         case 'View':
           this.viewAlert();
           break;
-        case 'Cancel':
-          this.cancelAlert();
-          break;
         default:
           this.cancelAlert();
       }
@@ -173,7 +170,6 @@ class Phone extends Component {
    return this.unreadMissedCallNotifications().length > 0;
   }
 
-  // TODO: move this into Alert
   getAlertType() {
     return this.hasUnreadMessages() ? 'messages' : this.hasUnreadMissedCalls() ? 'missed calls' : null;
   }
@@ -210,8 +206,6 @@ class Phone extends Component {
     const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messages} missedCallNotifications={this.state.missedCalls} />;
 
     switch(this.state.screenState) {
-      case SCREEN_STATES.HOMESCREEN:
-        return homescreen;
       case SCREEN_STATES.ALERT:
         return alert;
       case SCREEN_STATES.MENU:
