@@ -31,6 +31,7 @@ class Phone extends Component {
       batteryLevel: 100,
       isBluetoothOn: true,
       volumeLevel: 0,
+      signalStrength: 0,
       info: {
         carrier: 'T-Mobile',
       },
@@ -203,7 +204,7 @@ class Phone extends Component {
   getScreen() {
     const alert = <Alert title={this.getAlertTitle()} items={this.state.alertItems} selectedItem={this.state.alertSelectedItem} />;
     const menu = <Menu title={this.state.menuTitle} items={this.state.menuItems} />;
-    const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messages} missedCallNotifications={this.state.missedCalls} />;
+    const homescreen = <Homescreen date={this.state.date} isMilitaryTime={this.state.settings.isMilitaryTime} messageNotifications={this.state.messages} missedCallNotifications={this.state.missedCalls} signalStrength={this.state.signalStrength} />;
 
     switch(this.state.screenState) {
       case SCREEN_STATES.ALERT:

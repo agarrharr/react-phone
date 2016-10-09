@@ -13,8 +13,10 @@ You can find the most recent version of this guide [here](https://github.com/fac
 
 ### Features
 
-- [ ] Build all the buttons and lay them out
-- [ ] Build outline around the phone
+- [x] Build all the buttons and lay them out
+- [x] Build outline around the phone
+- [x] Add the "NO SERVICE" message
+- [ ] Make sure the "NO SERVICE" message doesn't push anything down
 - [ ] Build the Messages Menu
 - [ ] Build the Missed Calls Menu
 - [ ] Build the Settings Menu

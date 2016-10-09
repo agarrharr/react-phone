@@ -2,7 +2,13 @@ import React from 'react';
 import './Homescreen.css';
 import {FormattedDate, FormattedTime} from 'react-intl';
 
-const Homescreen = ({date, isMilitaryTime, messageNotifications, missedCallNotifications}) => {
+const Homescreen = ({
+  date,
+  isMilitaryTime,
+  messageNotifications,
+  missedCallNotifications,
+  signalStrength
+}) => {
   const messageNotificationMessage = getMessageNotificationMessage(messageNotifications);
   const missedCallNotificationMessage = getMissedCallNotificationMessage(missedCallNotifications);
 
@@ -28,6 +34,9 @@ const Homescreen = ({date, isMilitaryTime, messageNotifications, missedCallNotif
 
   return (
     <div className="Home">
+      <div className="Home__NoService">
+        {signalStrength === 0 ? 'NO SERVICE': null}
+      </div>
       <div className="Home__Datetime">
         <div className="Home__Time">
           <FormattedTime

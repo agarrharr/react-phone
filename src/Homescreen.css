@@ -1,6 +1,10 @@
 .Home {
   padding-top: 50px;
 }
+.Home__NoService {
+  text-align: center;
+  font-size: 0.8em;
+}
 .Home__Datetime {
   border-top: 2px solid #FFF;
   border-bottom: 2px solid #FFF;
