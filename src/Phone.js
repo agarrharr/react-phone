@@ -20,7 +20,7 @@ class Phone extends Component {
     this.state = {
       alertItems: ['View', 'Cancel'],
       alertSelectedItem: 0,
-      screenState: SCREEN_STATES.HOMESCREEN,
+      screenState: SCREEN_STATES.LOCKED,
       menuTitle: '',
       menuItems: [],
       date: new Date(),
@@ -89,7 +89,7 @@ class Phone extends Component {
   }
 
   handleLockClick() {
-    const isLocked = (this.state.screenState === SCREEN_STATES.HOMESCREEN) ? this.state.isLocked : !this.state.isLocked;
+    const isLocked = this.state.screenState === SCREEN_STATES.HOMESCREEN;
     this.setState({
       screenState: isLocked ? SCREEN_STATES.LOCKED : this.isUnreadNotifications() ? SCREEN_STATES.ALERT : SCREEN_STATES.HOMESCREEN,
     });
@@ -216,7 +216,9 @@ class Phone extends Component {
   }
 
   render() {
-    const statusbar = this.state.screenState === SCREEN_STATES.HOMESCREEN ?
+    const showStatusBar = this.state.screenState === SCREEN_STATES.HOMESCREEN ||
+      this.state.screenState === SCREEN_STATES.LOCKED;
+    const statusbar = showStatusBar ?
         <Statusbar
           isLocked={this.state.screenState === SCREEN_STATES.LOCKED}
           volumeLevel={this.state.volumeLevel}
