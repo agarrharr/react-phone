@@ -125,7 +125,7 @@ class Phone extends Component {
 
   viewAlert() {
     if (this.getAlertType() === 'messages') {
-      this.goToMessages();
+      this.goToMessageInbox();
     } else if (this.getAlertType() === 'missed calls') {
       this.goToMissedCalls();
     }
@@ -183,12 +183,32 @@ class Phone extends Component {
       '';
   }
 
-  goToMessages() {
+  goToMessageInbox() {
     this.setState({
       messages: this.state.messages.map(n => ({message: n.message, hasShownAlert: true})),
       screenState: SCREEN_STATES.MENU,
-      menuTitle: 'Messages',
-      menuItems: []
+      menuTitle: 'Inbox',
+      menuItems: [
+        {
+          left: 'Delete all',
+        },
+        {
+          left: '+15462349876',
+          right: '11:24'
+        },
+        {
+          left: 'Steve Jobs',
+          right: '11:24'
+        },
+        {
+          left: 'Steve Jobs',
+          right: '11:24'
+        },
+        {
+          left: '+15462349876',
+          right: '11:24'
+        },
+      ]
     });
   }
 

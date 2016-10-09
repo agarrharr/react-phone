@@ -1,2 +1,14 @@
-.Menu {
+.Menu__Title {
+  border-bottom: 1px solid #AAA;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-weight: 500;
+  font-size: 1.1em;
+}
+.Menu__Item--left {
+  text-align: left;
+}
+.Menu__Item--right {
+  text-align: right;
 }

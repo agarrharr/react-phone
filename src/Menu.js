@@ -7,8 +7,15 @@ const Menu = ({
 }) => {
   return (
     <div className="Menu">
-      {title}
-      {items.map(item => <div>item</div>)}
+      <div className="Menu__Title">
+        {title}
+      </div>
+      {items.map((item, i) =>
+          <div className="Menu__Item" key={i}>
+            <div className="Menu__Item--left">{item.left}</div>
+            <div className="Menu__Item--right">{item.right}</div>
+          </div>
+      )}
     </div>
   );
 };
