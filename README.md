@@ -2,6 +2,8 @@
 
 I'm just learning react and building the interface for a phone.
 
+![Screenshot](screenshot.png)
+
 ## Bootstrapped With Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
