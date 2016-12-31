@@ -61,6 +61,7 @@ class Phone extends Component {
     this.handleSelectClick = this.handleSelectClick.bind(this);
     this.handleEndCallClick = this.handleEndCallClick.bind(this);
     this.handleCallClick = this.handleCallClick.bind(this);
+    this.handleMessagesClick = this.handleMessagesClick.bind(this);
   }
 
   componentWillMount() {
@@ -121,6 +122,10 @@ class Phone extends Component {
     if (this.state.screenState === SCREEN_STATES.LOCKED) { return; }
     if (this.state.screenState !== SCREEN_STATES.HOMESCREEN) { return; }
     this.goToMissedCalls();
+  }
+
+  handleMessagesClick() {
+    this.goToMessageInbox();
   }
 
   viewAlert() {
@@ -261,6 +266,7 @@ class Phone extends Component {
             onSelectClick={this.handleSelectClick}
             onEndCallClick={this.handleEndCallClick}
             onCallClick={this.handleCallClick}
+            onMessagesClick={this.handleMessagesClick}
           />
         </div>
     );
