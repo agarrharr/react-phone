@@ -2,6 +2,8 @@
   padding-top: 50px;
 }
 .Home__NoService {
+  height: 18px;
+  margin-bottom: 5px;
   text-align: center;
   font-size: 0.8em;
 }
