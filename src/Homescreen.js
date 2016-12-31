@@ -7,7 +7,7 @@ const Homescreen = ({
   isMilitaryTime,
   messageNotifications,
   missedCallNotifications,
-  signalStrength
+  signalStrength,
 }) => {
   const messageNotificationMessage = getMessageNotificationMessage(messageNotifications);
   const missedCallNotificationMessage = getMissedCallNotificationMessage(missedCallNotifications);
