@@ -9,7 +9,8 @@
     "classnames": "^2.2.5",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-intl": "^2.1.5"
+    "react-intl": "^2.1.5",
+    "react-router-dom": "^4.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
