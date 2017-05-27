@@ -7,7 +7,13 @@ import Home from './Home.js';
 const Homescreen = () => (
   <div>
     <App>
-      <Home />
+      <Home
+        isLocked={false}
+        volumeLevel={0}
+        batteryLevel={0}
+        isBluetoothOn={true}
+        carrier={'Network'}
+      />
     </App>
   </div>
 );
